@@ -1,0 +1,60 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{287637C0-C821-453C-B41D-FBDC3BCBE72A}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="gsw.core.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="gsw.dynlib.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="gsw.statlib.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="gsw_core">
+        <MSBuild Projects="gsw.core.dproj"/>
+    </Target>
+    <Target Name="gsw_core:Clean">
+        <MSBuild Projects="gsw.core.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="gsw_core:Make">
+        <MSBuild Projects="gsw.core.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="gsw_dynlib">
+        <MSBuild Projects="gsw.dynlib.dproj"/>
+    </Target>
+    <Target Name="gsw_dynlib:Clean">
+        <MSBuild Projects="gsw.dynlib.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="gsw_dynlib:Make">
+        <MSBuild Projects="gsw.dynlib.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="gsw_statlib">
+        <MSBuild Projects="gsw.statlib.dproj"/>
+    </Target>
+    <Target Name="gsw_statlib:Clean">
+        <MSBuild Projects="gsw.statlib.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="gsw_statlib:Make">
+        <MSBuild Projects="gsw.statlib.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="gsw_core;gsw_dynlib;gsw_statlib"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="gsw_core:Clean;gsw_dynlib:Clean;gsw_statlib:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="gsw_core:Make;gsw_dynlib:Make;gsw_statlib:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
