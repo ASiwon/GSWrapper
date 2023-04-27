@@ -42,6 +42,7 @@
     <Import Project="base.optset" Condition="'$(Base)'!='' And Exists('base.optset')"/>
     <PropertyGroup Condition="'$(Base)'!=''">
         <CfgDependentOn>base.optset</CfgDependentOn>
+        <DCC_DcuOutput>..\..\Lib\D18\$(Platform)\$(Config)</DCC_DcuOutput>
         <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;$(DCC_Namespace)</DCC_Namespace>
         <DllSuffix>18</DllSuffix>
         <GenDll>true</GenDll>
@@ -50,6 +51,7 @@
         <VerInfo_Keys>CompanyName=;FileDescription=GhostScript Wrapper for Delphi - core package;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=gsw.core18.bpl;ProductName=GSWrapper library;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
+        <DCC_Description>GhostScript Wrapper for Delphi - core package</DCC_Description>
         <DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>

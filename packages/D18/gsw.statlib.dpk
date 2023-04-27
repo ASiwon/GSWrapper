@@ -30,6 +30,10 @@
 {$IMPLICITBUILD ON}
 
 requires
-  rtl;
+  rtl,
+  gsw.core;
+
+contains
+  gsw.static in '..\..\source\gsw.static.pas';
 
 end.
