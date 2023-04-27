@@ -34,7 +34,8 @@ implementation
 
 uses
   System.SysUtils,
-  Winapi.Windows;
+  Winapi.Windows,
+  gsw.resources;
 
 {$REGION 'TGhostScriptApiDynamic'}
 
@@ -65,7 +66,7 @@ begin
     System.Exit;
   FLibraryHandle := LoadLibrary(PChar(LibraryFileName));
   if LibraryHandle = 0 then
-    raise Exception.CreateFmt('Unable to load library: %s', [LibraryFileName]);
+    raise Exception.CreateFmt(SErrorUnableLoadLibrary, [LibraryFileName]);
   FCreateNewInstance := GetProcAddress(LibraryHandle, gsapi_new_instance_name);
   FDeleteInstance := GetProcAddress(LibraryHandle, gsapi_delete_instance_name);
   FExit := GetProcAddress(LibraryHandle, gsapi_exit_name);
