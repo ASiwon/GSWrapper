@@ -346,6 +346,7 @@ type
     FConverterExecutionCompleted: IGSExecutionCompleted;
     FConverterExecutionProgress: IGSExecutionProgress;
     FConverterStdOutputCaller: IGSStandardOutputCaller;
+    FExecutionCompletedCallKind: TGSCallKind;
     FPdfFileName: string;
     procedure DoExecuteCompleted(const ACorrect: Boolean);
     procedure DoExecutionProgress(const APosition, ATotal: Integer);
@@ -364,6 +365,10 @@ type
       /// </summary>
     property ExecutionCompleted: IGSExecutionCompleted read FConverterExecutionCompleted write FConverterExecutionCompleted;
       /// <summary>
+      /// Kind of the call execution completion information interface.
+      /// </summary>
+    property ExecutionCompletedCallKind: TGSCallKind read FExecutionCompletedCallKind write FExecutionCompletedCallKind;
+      /// <summary>
       /// Pdf file name to convert.
       /// </summary>
     property PdfFileName: string read FPdfFileName write FPdfFileName;
@@ -381,10 +386,12 @@ type
     FConverter: IGSWPdfToBitmap;
     FExecutionProgress: IGSExecutionProgress;
     FExecutionCompleted: IGSExecutionCompleted;
+    FExecutionCompletedCallKind: TGSCallKind;
     FStdOutputCaller: IGSStandardOutputCaller;
     FThread: TGSWPdfToBitmapThread;
     function GetExecutionProgress: IGSExecutionProgress;
     function GetExecutionCompleted: IGSExecutionCompleted;
+    function GetExecutionCompletedCallKind: TGSCallKind;
     function GetStdOutputCaller: IGSStandardOutputCaller;
       /// <summary>
       /// Last error code.
@@ -396,6 +403,7 @@ type
     function LastErrorMessage: String;
     procedure SetExecutionProgress(const AValue: IGSExecutionProgress);
     procedure SetExecutionCompleted(const AValue: IGSExecutionCompleted);
+    procedure SetExecutionCompletedCallKind(const AValue: TGSCallKind);
     procedure SetStdOutputCaller(const AValue: IGSStandardOutputCaller);
   public
     constructor Create(const AConverter: IGSWPdfToBitmap; const APdfFileName: String); reintroduce;
@@ -421,6 +429,7 @@ type
   strict private
     FExecuting: Boolean;
     FExecutionCompleted: IGSExecutionCompleted;
+    FExecutionCompletedCallKind: TGSCallKind;
     FPdfConverter: IGSWPdfToBitmap;
     FPdfFileName: String;
     FStopped: Boolean;
@@ -428,9 +437,11 @@ type
     procedure DoExecuteCompleted(const ACorrect: Boolean);
     function GetExecutionProgress: IGSExecutionProgress;
     function GetExecutionCompleted: IGSExecutionCompleted;
+    function GetExecutionCompletedCallKind: TGSCallKind;
     function GetStdOutputCaller: IGSStandardOutputCaller;
     procedure SetExecutionProgress(const AValue: IGSExecutionProgress);
     procedure SetExecutionCompleted(const AValue: IGSExecutionCompleted);
+    procedure SetExecutionCompletedCallKind(const AValue: TGSCallKind);
     procedure SetStdOutputCaller(const AValue: IGSStandardOutputCaller);
   public
     constructor Create(const AConverter: IGSWPdfToBitmap; const APdfFileName: String); reintroduce;
@@ -821,11 +832,16 @@ end;
 procedure TGSWPdfToBitmapThread.DoExecuteCompleted(const ACorrect: Boolean);
 begin
   if FConverterExecutionCompleted <> nil then
-    Queue(
-      procedure
-      begin
-        FConverterExecutionCompleted.Completed(ACorrect);
-      end);
+  begin
+    if ExecutionCompletedCallKind = ckQueued then
+      Queue(
+        procedure
+        begin
+          FConverterExecutionCompleted.Completed(ACorrect);
+        end)
+    else
+      FConverterExecutionCompleted.Completed(ACorrect);
+  end;
 end;
 
 procedure TGSWPdfToBitmapThread.DoExecutionProgress(const APosition, ATotal: Integer);
@@ -904,6 +920,7 @@ begin
   FThread.StdOutputCaller := FStdOutputCaller;
   FThread.ExecutionProgress := FExecutionProgress;
   FThread.ExecutionCompleted := FExecutionCompleted;
+  FThread.ExecutionCompletedCallKind := FExecutionCompletedCallKind;
   FThread.Start;
 end;
 
@@ -920,6 +937,11 @@ end;
 function TGSWPdfConverterAsyncExecutor.GetExecutionCompleted: IGSExecutionCompleted;
 begin
   Result := FExecutionCompleted;
+end;
+
+function TGSWPdfConverterAsyncExecutor.GetExecutionCompletedCallKind: TGSCallKind;
+begin
+  Result := FExecutionCompletedCallKind;
 end;
 
 function TGSWPdfConverterAsyncExecutor.GetStdOutputCaller: IGSStandardOutputCaller;
@@ -951,6 +973,11 @@ end;
 procedure TGSWPdfConverterAsyncExecutor.SetExecutionCompleted(const AValue: IGSExecutionCompleted);
 begin
   FExecutionCompleted := AValue;
+end;
+
+procedure TGSWPdfConverterAsyncExecutor.SetExecutionCompletedCallKind(const AValue: TGSCallKind);
+begin
+  FExecutionCompletedCallKind := AValue;
 end;
 
 procedure TGSWPdfConverterAsyncExecutor.SetStdOutputCaller(const AValue: IGSStandardOutputCaller);
@@ -1029,6 +1056,11 @@ begin
   Result := FExecutionCompleted;
 end;
 
+function TGSWPdfConverterSyncExecutor.GetExecutionCompletedCallKind: TGSCallKind;
+begin
+  Result := FExecutionCompletedCallKind;
+end;
+
 function TGSWPdfConverterSyncExecutor.GetStdOutputCaller: IGSStandardOutputCaller;
 begin
   Result := FPdfConverter.StdOutputCaller;
@@ -1052,6 +1084,11 @@ end;
 procedure TGSWPdfConverterSyncExecutor.SetExecutionCompleted(const AValue: IGSExecutionCompleted);
 begin
   FExecutionCompleted := AValue;
+end;
+
+procedure TGSWPdfConverterSyncExecutor.SetExecutionCompletedCallKind(const AValue: TGSCallKind);
+begin
+  FExecutionCompletedCallKind := AValue;
 end;
 
 procedure TGSWPdfConverterSyncExecutor.SetStdOutputCaller(const AValue: IGSStandardOutputCaller);

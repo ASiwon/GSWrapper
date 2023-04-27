@@ -106,6 +106,8 @@ type
     procedure Completed(const ACorrect: Boolean);
   end;
 
+  TGSCallKind = (ckQueued, ckImmediate);
+
     /// <summary>
     /// Async executor interface.
     /// </summary>
@@ -121,6 +123,7 @@ type
     function Executing: Boolean;
     function GetExecutionProgress: IGSExecutionProgress;
     function GetExecutionCompleted: IGSExecutionCompleted;
+    function GetExecutionCompletedCallKind: TGSCallKind;
     function GetStdOutputCaller: IGSStandardOutputCaller;
       /// <summary>
       /// Last error code.
@@ -132,6 +135,7 @@ type
     function LastErrorMessage: String;
     procedure SetExecutionProgress(const AValue: IGSExecutionProgress);
     procedure SetExecutionCompleted(const Value: IGSExecutionCompleted);
+    procedure SetExecutionCompletedCallKind(const AValue: TGSCallKind);
     procedure SetStdOutputCaller(const AValue: IGSStandardOutputCaller);
       /// <summary>
       /// Stop process.
@@ -145,6 +149,10 @@ type
       /// Reference to the execution completion information interface.
       /// </summary>
     property ExecutionCompleted: IGSExecutionCompleted read GetExecutionCompleted write SetExecutionCompleted;
+      /// <summary>
+      /// The kind of the call execution completion interface. Ignored in sync version.
+      /// </summary>
+    property ExecutionCompletedCallKind: TGSCallKind read GetExecutionCompletedCallKind write SetExecutionCompletedCallKind;
       /// <summary>
       /// Reference to the standard output call interface.
       /// </summary>
