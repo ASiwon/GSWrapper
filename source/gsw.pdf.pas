@@ -929,7 +929,7 @@ end;
 
 function TGSWPdfConverterAsyncExecutor.LastErrorCode: Integer;
 begin
-  if not Executing then
+  if not Executing and (FConverter <> nil) then
     Result := FConverter.LastErrorCode
   else
     Result := gs_error_ok;
@@ -937,7 +937,7 @@ end;
 
 function TGSWPdfConverterAsyncExecutor.LastErrorMessage: String;
 begin
-  if not Executing then
+  if not Executing and (FConverter <> nil) then
     Result := FConverter.LastErrorMessage
   else
     Result := '';
@@ -1063,7 +1063,5 @@ procedure TGSWPdfConverterSyncExecutor.Stop;
 begin
   FStopped := True;
 end;
-
-
 
 end.
