@@ -35,15 +35,15 @@ type
   {$EXTERNALSYM gsapi_init_with_args}
   function gsapi_run_string_begin(pinstance: Pointer; user_errors: Integer; var pexit_code: Integer): Integer; stdcall;
   {$EXTERNALSYM gsapi_run_string_begin}
-  function gsapi_run_string_continue(pinstance: Pointer; str: PAnsiChar; len: Integer; user_errors: Integer; var pexit_code: Integer): Integer; stdcall;
+  function gsapi_run_string_continue(pinstance: Pointer; str: PUTF8Char; len: Integer; user_errors: Integer; var pexit_code: Integer): Integer; stdcall;
   {$EXTERNALSYM gsapi_run_string_continue}
   function gsapi_run_string_end(pinstance: Pointer; user_errors: Integer; var pexit_code: Integer): Integer; stdcall;
   {$EXTERNALSYM gsapi_run_string_end}
-  function gsapi_run_string_with_length(pinstance: Pointer; str: PAnsiChar; len: Integer; user_errors: Integer; var pexit_code: Integer): Integer; stdcall;
+  function gsapi_run_string_with_length(pinstance: Pointer; str: PUTF8Char; len: Integer; user_errors: Integer; var pexit_code: Integer): Integer; stdcall;
   {$EXTERNALSYM gsapi_run_string_with_length}
-  function gsapi_run_string(pinstance: Pointer; str: PAnsiChar; user_errors: Integer; var pexit_code: Integer): Integer; stdcall;
+  function gsapi_run_string(pinstance: Pointer; str: PUTF8Char; user_errors: Integer; var pexit_code: Integer): Integer; stdcall;
   {$EXTERNALSYM gsapi_run_string}
-  function gsapi_run_file(pinstance: Pointer; file_name: PAnsiChar; user_errors: Integer; var pexit_code: Integer): Integer; stdcall;
+  function gsapi_run_file(pinstance: Pointer; file_name: PUTF8Char; user_errors: Integer; var pexit_code: Integer): Integer; stdcall;
   {$EXTERNALSYM gsapi_run_file}
   function gsapi_exit(pinstance: Pointer): Integer; stdcall;
   {$EXTERNALSYM gsapi_exit}
