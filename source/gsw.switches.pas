@@ -2,7 +2,7 @@
 
 interface
 
-{$I DelphiVersions.inc}
+{$I ..\..\source\DelphiVersions.inc}
 
 uses
   System.Rtti;
