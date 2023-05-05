@@ -334,7 +334,8 @@ type
   public
     class function CreateToBMP(const AFormat: TGSWBmpFormat = bfBmp16m): IGSWPdfToBmp; static;
     class function CreateToFormat(const AFormat: TGSWBitmapFormat): IGSWPdfToBitmap; static;
-    class function CreateToJPEG: IGSWPdfToJpeg; static;
+    class function CreateToJPEG: IGSWPdfToJpeg; overload; static;
+    class function CreateToJPEG(const AQualityLevel: Integer): IGSWPdfToJpeg; overload; static;
     class function CreateToPCX(const AFormat: TGSWPcxFormat = bfPcx24b): IGSWPdfToPcx; static;
     class function CreateToPNG(const AFormat: TGSPngFormat): IGSWPdfToPng; static;
     class function CreateToTIFF(const AFormat: TGSWTiffFormat): IGSWPdfToTiff; static;
@@ -788,6 +789,12 @@ begin
     else
       raise Exception.CreateFmt(SErrorWrongFileFormat, [GetEnumName(TypeInfo(TGSWBitmapFormat), Integer(AFormat))]);
   end;
+end;
+
+class function TGSWPdfConvertersFactory.CreateToJPEG(const AQualityLevel: Integer): IGSWPdfToJpeg;
+begin
+  Result := TGSWPdfToJpegConverter.Create;
+  Result.QualityLevel := AQualityLevel;
 end;
 
 class function TGSWPdfConvertersFactory.CreateToJPEG: IGSWPdfToJpeg;
